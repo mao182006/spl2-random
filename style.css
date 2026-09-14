@@ -52,6 +52,13 @@ h1 {
   color: var(--accent-color);
 }
 
+/* 全体カウント表示エリア */
+.total-count {
+  font-size: 0.85rem;
+  color: #aaa;
+  margin-bottom: 0.5rem;
+}
+
 /* ボタン配置グループ */
 .controls {
   display: flex;
@@ -103,7 +110,7 @@ details {
   overflow: hidden;
 }
 
-/* アコーディオンの見出し（修正部分） */
+/* アコーディオンの見出し */
 summary {
   padding: 0.6rem 0.8rem;
   font-weight: bold;
@@ -114,10 +121,9 @@ summary {
   align-items: center;
   user-select: none;
   background-color: #252525;
-  list-style: none; /* 標準矢印消去 */
+  list-style: none;
 }
 
-/* Chrome / Safari / Firefox 向けの標準矢印消去（全ブラウザ対応） */
 summary::-webkit-details-marker,
 summary::marker {
   display: none;
@@ -127,18 +133,18 @@ summary:hover {
   background-color: #303030;
 }
 
-/* 右端に表示する下向き三角（修正部分：文字と色を確実に表示） */
+/* 右端に表示する下向き三角 */
 summary::after {
-  content: "\25BC"; /* Unicode形式で下向き黒三角を指定（確実に読み込ませるため） */
+  content: "\25BC";
   display: inline-block;
   font-size: 0.75rem;
   color: #aaaaaa;
   margin-left: auto;
 }
 
-/* 開いている状態の上向き三角（修正部分） */
+/* 開いている状態の上向き三角 */
 details[open] summary::after {
-  content: "\25B2"; /* Unicode形式で上向き黒三角を指定 */
+  content: "\25B2";
   color: var(--accent-color);
 }
 
@@ -172,11 +178,4 @@ details[open] summary::after {
 .weapon-item input, summary input {
   margin-right: 0.5rem;
   cursor: pointer;
-}
-
-/* 全体カウント表示エリアの追加スタイル */
-.total-count {
-  font-size: 0.85rem;
-  color: #aaa;
-  margin-bottom: 0.5rem;
 }
