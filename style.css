@@ -1,10 +1,10 @@
 /* サイト全体の共通カラー変数設定 */
 :root {
-  --bg-color: #121212; /* 全体の背景色（ダークモード） */
-  --card-bg: #1e1e1e; /* メインカードの背景色 */
-  --text-color: #ffffff; /* 文字色（白） */
-  --accent-color: #00e676; /* アクセントカラー（緑） */
-  --category-bg: #2a2a2a; /* カテゴリヘッダーの背景色 */
+  --bg-color: #121212;
+  --card-bg: #1e1e1e;
+  --text-color: #ffffff;
+  --accent-color: #00e676;
+  --category-bg: #2a2a2a;
 }
 
 /* ページ全体のレイアウト設定 */
@@ -13,7 +13,7 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
   display: flex;
-  justify-content: center; /* 左右中央寄せ */
+  justify-content: center;
   padding: 1rem;
   margin: 0;
   box-sizing: border-box;
@@ -103,22 +103,23 @@ details {
   overflow: hidden;
 }
 
-/* アコーディオンの見出し */
+/* アコーディオンの見出し（修正部分） */
 summary {
   padding: 0.6rem 0.8rem;
   font-weight: bold;
   font-size: 0.9rem;
   cursor: pointer;
   display: flex;
-  justify-content: space-between; /* 左右両端に配置（タイトルを左、三角を右） */
+  justify-content: space-between;
   align-items: center;
   user-select: none;
   background-color: #252525;
-  list-style: none; /* ブラウザ標準の矢印を非表示 */
+  list-style: none; /* 標準矢印消去 */
 }
 
-/* Safari/Chrome用標準矢印非表示設定 */
-summary::-webkit-details-marker {
+/* Chrome / Safari / Firefox 向けの標準矢印消去（全ブラウザ対応） */
+summary::-webkit-details-marker,
+summary::marker {
   display: none;
 }
 
@@ -126,16 +127,18 @@ summary:hover {
   background-color: #303030;
 }
 
-/* 右端に表示する下向き三角（閉じた状態） */
+/* 右端に表示する下向き三角（修正部分：文字と色を確実に表示） */
 summary::after {
-  content: '▼';
+  content: "\25BC"; /* Unicode形式で下向き黒三角を指定（確実に読み込ませるため） */
+  display: inline-block;
   font-size: 0.75rem;
-  color: #aaa;
+  color: #aaaaaa;
+  margin-left: auto;
 }
 
-/* 開いている状態の上向き三角 */
+/* 開いている状態の上向き三角（修正部分） */
 details[open] summary::after {
-  content: '▲';
+  content: "\25B2"; /* Unicode形式で上向き黒三角を指定 */
   color: var(--accent-color);
 }
 
@@ -169,4 +172,11 @@ details[open] summary::after {
 .weapon-item input, summary input {
   margin-right: 0.5rem;
   cursor: pointer;
+}
+
+/* 全体カウント表示エリアの追加スタイル */
+.total-count {
+  font-size: 0.85rem;
+  color: #aaa;
+  margin-bottom: 0.5rem;
 }
