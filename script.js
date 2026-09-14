@@ -1,4 +1,3 @@
-// 指定の武器リストデータ
 const weaponCategories = {
   "シューター": [
     "ヒーローシューター レプリカ", 
@@ -79,7 +78,9 @@ const weaponCategories = {
   ]
 };
 
-// 初期表示処理
+// 保存時の識別キー（新バージョンに更新）
+const STORAGE_KEY = 'spla2_weapon_selection_v2';
+
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('weaponContainer');
   let weaponIdCounter = 0;
@@ -131,11 +132,11 @@ document.addEventListener('DOMContentLoaded', () => {
     container.appendChild(details);
   });
 
-  // 保存されているチェック状態の復元
+  // 保存状態の復元
   loadSavedState();
 });
 
-// カテゴリ一括切り替え処理
+// カテゴリ一括切り替え
 function toggleCategory(catName, isChecked) {
   const checkboxes = document.querySelectorAll(`.cat-cb-${catName}`);
   checkboxes.forEach(cb => cb.checked = isChecked);
@@ -143,18 +144,20 @@ function toggleCategory(catName, isChecked) {
   saveState();
 }
 
-// 個別武器変更処理
+// 個別武器変更
 function updateCatCheckbox(catName) {
   const checkboxes = document.querySelectorAll(`.cat-cb-${catName}`);
   const catCb = document.getElementById(`cat_${catName}`);
   const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
   
-  catCb.checked = (checkedCount === checkboxes.length);
+  if (catCb) {
+    catCb.checked = (checkedCount === checkboxes.length);
+  }
   updateCounts();
   saveState();
 }
 
-// 全選択・全解除処理
+// 全選択・全解除
 function toggleAll(status) {
   const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
   allCheckboxes.forEach(cb => cb.checked = status);
@@ -162,7 +165,7 @@ function toggleAll(status) {
   saveState();
 }
 
-// リアルタイム選択数計算処理
+// カウント表示更新
 function updateCounts() {
   let totalWeapons = 0;
   let totalChecked = 0;
@@ -186,7 +189,7 @@ function updateCounts() {
   }
 }
 
-// チェック状態の保存
+// チェック状態の保存処理
 function saveState() {
   const weaponCheckboxes = document.querySelectorAll('.weapon-cb');
   const savedState = {};
@@ -195,34 +198,51 @@ function saveState() {
     savedState[cb.value] = cb.checked;
   });
 
-  localStorage.setItem('spla2_weapon_selection', JSON.stringify(savedState));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(savedState));
+  } catch (e) {
+    console.error('保存に失敗しました:', e);
+  }
 }
 
-// チェック状態の復元
+// チェック状態の読み込み処理
 function loadSavedState() {
-  const savedData = localStorage.getItem('spla2_weapon_selection');
-  
-  if (savedData) {
-    const savedState = JSON.parse(savedData);
-    const weaponCheckboxes = document.querySelectorAll('.weapon-cb');
+  try {
+    const savedData = localStorage.getItem(STORAGE_KEY);
+    
+    if (savedData) {
+      const savedState = JSON.parse(savedData);
+      const weaponCheckboxes = document.querySelectorAll('.weapon-cb');
 
-    weaponCheckboxes.forEach(cb => {
-      if (savedState.hasOwnProperty(cb.value)) {
-        cb.checked = savedState[cb.value];
-      }
-    });
+      weaponCheckboxes.forEach(cb => {
+        if (savedState.hasOwnProperty(cb.value)) {
+          cb.checked = savedState[cb.value];
+        }
+      });
 
-    Object.keys(weaponCategories).forEach(catName => {
-      const checkboxes = document.querySelectorAll(`.cat-cb-${catName}`);
-      const catCb = document.getElementById(`cat_${catName}`);
-      const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
-      if (catCb) {
-        catCb.checked = (checkedCount === checkboxes.length);
-      }
-    });
+      // 各カテゴリヘッダーのチェック状態を同期
+      Object.keys(weaponCategories).forEach(catName => {
+        const checkboxes = document.querySelectorAll(`.cat-cb-${catName}`);
+        const catCb = document.getElementById(`cat_${catName}`);
+        const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+        if (catCb) {
+          catCb.checked = (checkedCount === checkboxes.length);
+        }
+      });
+    }
+  } catch (e) {
+    console.error('読み込みに失敗しました:', e);
   }
 
   updateCounts();
+}
+
+// 保存データのリセット処理
+function resetSavedState() {
+  if (confirm('保存データを初期化（全選択）しますか？')) {
+    localStorage.removeItem(STORAGE_KEY);
+    toggleAll(true);
+  }
 }
 
 // くじ引き処理
