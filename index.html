@@ -16,11 +16,16 @@
 
     <button onclick="drawWeapon()" style="margin-bottom: 1rem;">くじを引く</button>
 
+    <!-- ボタンエリアに「保存」ボタンを追加 -->
     <div class="controls">
+      <button class="sub-btn" onclick="saveStateManually()" style="background-color: #00bcd4; color: #000;">保存</button>
       <button class="sub-btn" onclick="toggleAll(true)">全選択</button>
       <button class="sub-btn" onclick="toggleAll(false)">全解除</button>
       <button class="sub-btn" onclick="resetSavedState()" style="background-color: #552222;">リセット</button>
     </div>
+
+    <!-- 保存完了メッセージ表示エリア -->
+    <div id="toast" class="toast">状態を保存しました！</div>
 
     <div class="weapon-container" id="weaponContainer"></div>
   </div>
