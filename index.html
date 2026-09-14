@@ -10,9 +10,10 @@
       --card-bg: #1e1e1e;
       --text-color: #ffffff;
       --accent-color: #00e676;
+      --category-bg: #2a2a2a;
     }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
       background-color: var(--bg-color);
       color: var(--text-color);
       display: flex;
@@ -23,20 +24,21 @@
     }
     .container {
       background-color: var(--card-bg);
-      padding: 1.2rem;
+      padding: 1.5rem;
       border-radius: 16px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
       text-align: center;
       width: 100%;
-      max-width: 400px;
+      max-width: 420px;
     }
     h1 {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       color: #aaa;
-      margin: 0 0 1rem 0;
+      margin-top: 0;
+      margin-bottom: 1rem;
     }
     .result-box {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: bold;
       min-height: 2.5rem;
       display: flex;
@@ -46,7 +48,6 @@
       border-bottom: 2px solid var(--accent-color);
       padding-bottom: 0.5rem;
       color: var(--accent-color);
-      word-break: break-all;
     }
     .controls {
       display: flex;
@@ -63,40 +64,50 @@
       border-radius: 8px;
       cursor: pointer;
       width: 100%;
-      -webkit-tap-highlight-color: transparent;
     }
     .sub-btn {
       background-color: #333;
       color: #fff;
       font-size: 0.8rem;
-      padding: 0.5rem;
+      padding: 0.4rem;
       border-radius: 4px;
       cursor: pointer;
       flex: 1;
     }
     .weapon-container {
-      max-height: 350px;
+      max-height: 380px;
       overflow-y: auto;
       text-align: left;
       border: 1px solid #333;
       border-radius: 8px;
       background-color: #181818;
       padding: 0.5rem;
-      -webkit-overflow-scrolling: touch;
     }
     details {
       margin-bottom: 0.5rem;
       border: 1px solid #333;
       border-radius: 6px;
-      background-color: #2a2a2a;
+      background-color: var(--category-bg);
+      overflow: hidden;
     }
     summary {
       padding: 0.6rem 0.8rem;
       font-weight: bold;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       cursor: pointer;
-      background-color: #252525;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       user-select: none;
+      background-color: #252525;
+    }
+    summary:hover {
+      background-color: #303030;
+    }
+    .category-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
     .category-items {
       padding: 0.5rem 0.8rem;
@@ -105,18 +116,16 @@
     .weapon-item {
       display: flex;
       align-items: center;
-      padding: 0.4rem 0;
+      padding: 0.3rem 0;
       font-size: 0.85rem;
       border-bottom: 1px solid #252525;
     }
     .weapon-item:last-child {
       border-bottom: none;
     }
-    input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
+    .weapon-item input, summary input {
       margin-right: 0.5rem;
-      accent-color: var(--accent-color);
+      cursor: pointer;
     }
   </style>
 </head>
@@ -126,90 +135,17 @@
     <h1>スプラ2 ナワバリ武器くじ</h1>
     <div class="result-box" id="result">???</div>
     
-    <button id="drawBtn" style="margin-bottom: 1rem;">くじを引く</button>
+    <button onclick="drawWeapon()" style="margin-bottom: 1rem;">くじを引く</button>
 
     <div class="controls">
-      <button class="sub-btn" id="selectAllBtn">全選択</button>
-      <button class="sub-btn" id="deselectAllBtn">全解除</button>
+      <button class="sub-btn" onclick="toggleAll(true)">全選択</button>
+      <button class="sub-btn" onclick="toggleAll(false)">全解除</button>
     </div>
 
     <div class="weapon-container" id="weaponContainer"></div>
   </div>
 
-  <script>
-    const weaponCategories = {
-      "シューター": ["ボールドマーカー", "ボールドマーカーネオ", "ボールドマーカー7", "スプラシューター", "スプラシューターコラボ", "ヒーローシューター レプリカ", "スプラシューターベッチュー", "52ガロン", "52ガロンデコ", "52ガロンベッチュー", "N-ZAP85", "N-ZAP89", "N-ZAP83", "プライムシューター", "プライムシューターコラボ", "プライムシューターベッチュー", "96ガロン", "96ガロンデコ", "ジェットスイーパー", "ジェットスイーパーカスタム", "L3リールガン", "L3リールガンD", "L3リールガンベッチュー", "H3リールガン", "H3リールガンD", "H3リールガンチェリー", "ボトルガイザー", "ボトルガイザーフォイル"],
-      "ブラスター": ["ノヴァブラスター", "ノヴァブラスターネオ", "ノヴァブラスターベッチュー", "ホットブラスター", "ホットブラスターカスタム", "ヒーローブラスター レプリカ", "ロングブラスター", "ロングブラスターカスタム", "ロングブラスターネオ", "クラッシュブラスター", "クラッシュブラスターネオ"],
-      "ローラー": ["カーボンローラー", "カーボンローラーデコ", "スプラローラー", "スプラローラーコラボ", "ヒーローローラー レプリカ", "スプラローラーベッチュー", "ダイナモローラー", "ダイナモローラーテスラ", "ダイナモローラーベッチュー", "ヴァリアブルローラー", "ヴァリアブルローラーフォイル"],
-      "フデ": ["パブロ", "パブロ・ヒュー", "パーマネント・パブロ", "ホクサイ", "ホクサイ・ヒュー", "ヒーローブラシ レプリカ", "ホクサイベッチュー"],
-      "チャージャー": ["スクイックリンα", "スクイックリンβ", "スクイックリンγ", "スプラチャージャー", "スプラチャージャーコラボ", "ヒーローチャージャー レプリカ", "スプラチャージャーベッチュー", "スプラスコープ", "スプラスコープコラボ", "スプラスコープベッチュー", "リッター4K", "リッター4Kカスタム", "4Kスコープ", "4Kスコープカスタム", "竹筒銃・甲", "竹筒銃・乙", "竹筒銃・丙", "ソイチューバー", "ソイチューバーカスタム"],
-      "スロッシャー": ["バケットスロッシャー", "バケットスロッシャーデコ", "ヒーロースロッシャー レプリカ", "バケットスロッシャーベッチュー", "ヒッセン", "ヒッセン・ヒュー", "スクリュースロッシャー", "スクリュースロッシャーネオ", "スクリュースロッシャーベッチュー", "オーバーフロッシャー", "オーバーフロッシャーデコ", "エクスプロッシャー", "エクスプロッシャーカスタム"],
-      "スピナー": ["バレルスピナー", "バレルスピナーデコ", "ヒーロースピナー レプリカ", "バレルスピナーベッチュー", "ハイドラント", "ハイドラントカスタム", "スプラスピナー", "スプラスピナーコラボ", "スプラスピナーベッチュー"],
-      "マニューバー": ["スパッタリー", "スパッタリー・ヒュー", "スパッタリークリア", "スプラマニューバー", "スプラマニューバーコラボ", "ヒーローマニューバー レプリカ", "スプラマニューバーベッチュー", "ケルビン525", "ケルビン525デコ", "ケルビン525ベッチュー", "デュアルスイーパー", "デュアルスイーパーカスタム", "クアッドホッパーブラック", "クアッドホッパーホワイト"],
-      "シェルター": ["パラシェルター", "パラシェルターソレラ", "ヒーローシェルター レプリカ", "キャンピングシェルター", "キャンピングシェルターソレラ", "キャンピングシェルターカーモ", "スパイガジェット", "スパイガジェットソレラ", "スパイガジェットベッチュー"]
-    };
-
-    window.addEventListener('DOMContentLoaded', () => {
-      const container = document.getElementById('weaponContainer');
-      let idCounter = 0;
-
-      // リスト作成
-      Object.keys(weaponCategories).forEach(cat => {
-        const details = document.createElement('details');
-        const summary = document.createElement('summary');
-        summary.textContent = `${cat} (${weaponCategories[cat].length})`;
-        
-        const itemsDiv = document.createElement('div');
-        itemsDiv.className = 'category-items';
-
-        weaponCategories[cat].forEach(weapon => {
-          const id = 'w_' + idCounter++;
-          const item = document.createElement('div');
-          item.className = 'weapon-item';
-          item.innerHTML = `<input type="checkbox" class="weapon-cb" id="${id}" value="${weapon}" checked><label for="${id}">${weapon}</label>`;
-          itemsDiv.appendChild(item);
-        });
-
-        details.appendChild(summary);
-        details.appendChild(itemsDiv);
-        container.appendChild(details);
-      });
-
-      // ボタンのイベント登録
-      document.getElementById('drawBtn').addEventListener('click', drawWeapon);
-      document.getElementById('selectAllBtn').addEventListener('click', () => toggleAll(true));
-      document.getElementById('deselectAllBtn').addEventListener('click', () => toggleAll(false));
-    });
-
-    function toggleAll(status) {
-      const checkboxes = document.querySelectorAll('.weapon-cb');
-      checkboxes.forEach(cb => cb.checked = status);
-    }
-
-    function drawWeapon() {
-      const checkedBoxes = document.querySelectorAll('.weapon-cb:checked');
-      if (checkedBoxes.length === 0) {
-        alert('武器を1つ以上選択してください！');
-        return;
-      }
-
-      const activeWeapons = Array.from(checkedBoxes).map(cb => cb.value);
-      const resultDiv = document.getElementById('result');
-      let count = 0;
-      
-      const interval = setInterval(() => {
-        const randomTemp = activeWeapons[Math.floor(Math.random() * activeWeapons.length)];
-        resultDiv.textContent = randomTemp;
-        count++;
-        
-        if (count > 10) {
-          clearInterval(interval);
-          const finalChoice = activeWeapons[Math.floor(Math.random() * activeWeapons.length)];
-          resultDiv.textContent = finalChoice;
-        }
-      }, 50);
-    }
-  </script>
+  <script src="script.js"></script>
 
 </body>
 </html>
