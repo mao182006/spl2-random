@@ -1,4 +1,4 @@
-// 武器種ごとに分類したデータ
+// 指定の武器リストデータ
 const weaponCategories = {
   "シューター": [
     "ヒーローシューター レプリカ", 
@@ -118,7 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
         <label for="${id}">${weapon}</label>
       `;
 
-      // チェック変更時にイベント発火
       const cbInput = item.querySelector('input');
       cbInput.addEventListener('change', () => {
         updateCatCheckbox(catName);
@@ -132,8 +131,8 @@ document.addEventListener('DOMContentLoaded', () => {
     container.appendChild(details);
   });
 
-  // 初期ロード時の選択数計算
-  updateCounts();
+  // 保存されているチェック状態の復元
+  loadSavedState();
 });
 
 // カテゴリ一括切り替え処理
@@ -141,9 +140,10 @@ function toggleCategory(catName, isChecked) {
   const checkboxes = document.querySelectorAll(`.cat-cb-${catName}`);
   checkboxes.forEach(cb => cb.checked = isChecked);
   updateCounts();
+  saveState();
 }
 
-// 個別武器変更の処理
+// 個別武器変更処理
 function updateCatCheckbox(catName) {
   const checkboxes = document.querySelectorAll(`.cat-cb-${catName}`);
   const catCb = document.getElementById(`cat_${catName}`);
@@ -151,6 +151,7 @@ function updateCatCheckbox(catName) {
   
   catCb.checked = (checkedCount === checkboxes.length);
   updateCounts();
+  saveState();
 }
 
 // 全選択・全解除処理
@@ -158,9 +159,10 @@ function toggleAll(status) {
   const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
   allCheckboxes.forEach(cb => cb.checked = status);
   updateCounts();
+  saveState();
 }
 
-// リアルタイム選択数計算関数
+// リアルタイム選択数計算処理
 function updateCounts() {
   let totalWeapons = 0;
   let totalChecked = 0;
@@ -182,6 +184,45 @@ function updateCounts() {
   if (totalCountDiv) {
     totalCountDiv.textContent = `選択中: ${totalChecked} / ${totalWeapons}`;
   }
+}
+
+// チェック状態の保存
+function saveState() {
+  const weaponCheckboxes = document.querySelectorAll('.weapon-cb');
+  const savedState = {};
+
+  weaponCheckboxes.forEach(cb => {
+    savedState[cb.value] = cb.checked;
+  });
+
+  localStorage.setItem('spla2_weapon_selection', JSON.stringify(savedState));
+}
+
+// チェック状態の復元
+function loadSavedState() {
+  const savedData = localStorage.getItem('spla2_weapon_selection');
+  
+  if (savedData) {
+    const savedState = JSON.parse(savedData);
+    const weaponCheckboxes = document.querySelectorAll('.weapon-cb');
+
+    weaponCheckboxes.forEach(cb => {
+      if (savedState.hasOwnProperty(cb.value)) {
+        cb.checked = savedState[cb.value];
+      }
+    });
+
+    Object.keys(weaponCategories).forEach(catName => {
+      const checkboxes = document.querySelectorAll(`.cat-cb-${catName}`);
+      const catCb = document.getElementById(`cat_${catName}`);
+      const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+      if (catCb) {
+        catCb.checked = (checkedCount === checkboxes.length);
+      }
+    });
+  }
+
+  updateCounts();
 }
 
 // くじ引き処理
