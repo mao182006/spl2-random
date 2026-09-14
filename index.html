@@ -1,150 +1,30 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html> <!-- HTML5の文書宣言 -->
+<html lang="ja"> <!-- 言語設定：日本語 -->
+<head> <!-- 管理情報エリア -->
+  <meta charset="UTF-8"> <!-- 文字化け防止設定 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- スマホ表示最適化 -->
   <title>スプラ2 武器くじ</title>
-  <style>
-    :root {
-      --bg-color: #121212;
-      --card-bg: #1e1e1e;
-      --text-color: #ffffff;
-      --accent-color: #00e676;
-      --category-bg: #2a2a2a;
-    }
-    body {
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      display: flex;
-      justify-content: center;
-      padding: 1rem;
-      margin: 0;
-      box-sizing: border-box;
-    }
-    .container {
-      background-color: var(--card-bg);
-      padding: 1.5rem;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-      text-align: center;
-      width: 100%;
-      max-width: 420px;
-    }
-    h1 {
-      font-size: 1.2rem;
-      color: #aaa;
-      margin-top: 0;
-      margin-bottom: 1rem;
-    }
-    .result-box {
-      font-size: 1.3rem;
-      font-weight: bold;
-      min-height: 2.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 1rem;
-      border-bottom: 2px solid var(--accent-color);
-      padding-bottom: 0.5rem;
-      color: var(--accent-color);
-    }
-    .controls {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-    button {
-      background-color: var(--accent-color);
-      color: #000;
-      border: none;
-      padding: 0.8rem;
-      font-size: 1rem;
-      font-weight: bold;
-      border-radius: 8px;
-      cursor: pointer;
-      width: 100%;
-    }
-    .sub-btn {
-      background-color: #333;
-      color: #fff;
-      font-size: 0.8rem;
-      padding: 0.4rem;
-      border-radius: 4px;
-      cursor: pointer;
-      flex: 1;
-    }
-    .weapon-container {
-      max-height: 380px;
-      overflow-y: auto;
-      text-align: left;
-      border: 1px solid #333;
-      border-radius: 8px;
-      background-color: #181818;
-      padding: 0.5rem;
-    }
-    details {
-      margin-bottom: 0.5rem;
-      border: 1px solid #333;
-      border-radius: 6px;
-      background-color: var(--category-bg);
-      overflow: hidden;
-    }
-    summary {
-      padding: 0.6rem 0.8rem;
-      font-weight: bold;
-      font-size: 0.9rem;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      user-select: none;
-      background-color: #252525;
-    }
-    summary:hover {
-      background-color: #303030;
-    }
-    .category-title {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .category-items {
-      padding: 0.5rem 0.8rem;
-      background-color: #181818;
-    }
-    .weapon-item {
-      display: flex;
-      align-items: center;
-      padding: 0.3rem 0;
-      font-size: 0.85rem;
-      border-bottom: 1px solid #252525;
-    }
-    .weapon-item:last-child {
-      border-bottom: none;
-    }
-    .weapon-item input, summary input {
-      margin-right: 0.5rem;
-      cursor: pointer;
-    }
-  </style>
+  
+  <!-- 外部CSSファイルの読み込み -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="container">
+  <div class="container"> <!-- アプリのメインカード -->
     <h1>スプラ2 ナワバリ武器くじ</h1>
-    <div class="result-box" id="result">???</div>
+    <div class="result-box" id="result">???</div> <!-- 抽選結果表示エリア -->
     
-    <button onclick="drawWeapon()" style="margin-bottom: 1rem;">くじを引く</button>
+    <button onclick="drawWeapon()" style="margin-bottom: 1rem;">くじを引く</button> <!-- くじ引きボタン -->
 
     <div class="controls">
-      <button class="sub-btn" onclick="toggleAll(true)">全選択</button>
-      <button class="sub-btn" onclick="toggleAll(false)">全解除</button>
+      <button class="sub-btn" onclick="toggleAll(true)">全選択</button> <!-- 全選択ボタン -->
+      <button class="sub-btn" onclick="toggleAll(false)">全解除</button> <!-- 全解除ボタン -->
     </div>
 
-    <div class="weapon-container" id="weaponContainer"></div>
+    <div class="weapon-container" id="weaponContainer"></div> <!-- JavaScriptで武器要素が入る枠 -->
   </div>
 
+  <!-- 外部JavaScriptファイルの読み込み -->
   <script src="script.js"></script>
 
 </body>

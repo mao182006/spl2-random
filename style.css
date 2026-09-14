@@ -1,0 +1,172 @@
+/* サイト全体の共通カラー変数設定 */
+:root {
+  --bg-color: #121212; /* 全体の背景色（ダークモード） */
+  --card-bg: #1e1e1e; /* メインカードの背景色 */
+  --text-color: #ffffff; /* 文字色（白） */
+  --accent-color: #00e676; /* アクセントカラー（緑） */
+  --category-bg: #2a2a2a; /* カテゴリヘッダーの背景色 */
+}
+
+/* ページ全体のレイアウト設定 */
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  display: flex;
+  justify-content: center; /* 左右中央寄せ */
+  padding: 1rem;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* メインカード枠 */
+.container {
+  background-color: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  width: 100%;
+  max-width: 420px;
+}
+
+/* タイトル */
+h1 {
+  font-size: 1.2rem;
+  color: #aaa;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+/* 抽選結果表示エリア */
+.result-box {
+  font-size: 1.3rem;
+  font-weight: bold;
+  min-height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: 0.5rem;
+  color: var(--accent-color);
+}
+
+/* ボタン配置グループ */
+.controls {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* メインボタン（くじを引く） */
+button {
+  background-color: var(--accent-color);
+  color: #000;
+  border: none;
+  padding: 0.8rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* サブボタン（全選択 / 全解除） */
+.sub-btn {
+  background-color: #333;
+  color: #fff;
+  font-size: 0.8rem;
+  padding: 0.4rem;
+  border-radius: 4px;
+  cursor: pointer;
+  flex: 1;
+}
+
+/* 武器一覧のスクロールエリア */
+.weapon-container {
+  max-height: 380px;
+  overflow-y: auto;
+  text-align: left;
+  border: 1px solid #333;
+  border-radius: 8px;
+  background-color: #181818;
+  padding: 0.5rem;
+}
+
+/* アコーディオンの外枠 */
+details {
+  margin-bottom: 0.5rem;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background-color: var(--category-bg);
+  overflow: hidden;
+}
+
+/* アコーディオンの見出し */
+summary {
+  padding: 0.6rem 0.8rem;
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between; /* 左右両端に配置（タイトルを左、三角を右） */
+  align-items: center;
+  user-select: none;
+  background-color: #252525;
+  list-style: none; /* ブラウザ標準の矢印を非表示 */
+}
+
+/* Safari/Chrome用標準矢印非表示設定 */
+summary::-webkit-details-marker {
+  display: none;
+}
+
+summary:hover {
+  background-color: #303030;
+}
+
+/* 右端に表示する下向き三角（閉じた状態） */
+summary::after {
+  content: '▼';
+  font-size: 0.75rem;
+  color: #aaa;
+}
+
+/* 開いている状態の上向き三角 */
+details[open] summary::after {
+  content: '▲';
+  color: var(--accent-color);
+}
+
+/* カテゴリタイトル表示領域 */
+.category-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* 開いた際に出てくる武器リスト枠 */
+.category-items {
+  padding: 0.5rem 0.8rem;
+  background-color: #181818;
+}
+
+/* 個別武器行 */
+.weapon-item {
+  display: flex;
+  align-items: center;
+  padding: 0.3rem 0;
+  font-size: 0.85rem;
+  border-bottom: 1px solid #252525;
+}
+
+.weapon-item:last-child {
+  border-bottom: none;
+}
+
+/* チェックボックス共通余白 */
+.weapon-item input, summary input {
+  margin-right: 0.5rem;
+  cursor: pointer;
+}
