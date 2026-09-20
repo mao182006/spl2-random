@@ -4,8 +4,8 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: #121212;
-  color: #f0f0f0;
+  background-color: #121212; /* 全体の背景色 */
+  color: #f0f0f0;            /* 全体の文字色 */
   margin: 0;
   padding: 12px;
   display: flex;
@@ -22,41 +22,41 @@ h1 {
   font-size: 1.2rem;
   text-align: center;
   margin: 0 0 10px 0;
-  color: #ffffff;
+  color: #ffffff; /* 題名の文字色 */
   font-weight: 800;
   letter-spacing: 1px;
 }
 
-/* 結果表示ボックス（？？？などの初期状態や結果テキスト） */
+/* 結果表示ボックス */
 .result-box {
-  background: #1e1e1e;
-  border: 3px solid #66cc00; /* スプラ2 蛍光グリーン */
+  background: #1e1e1e;       /* 結果ボックスの背景色 */
+  border: 3px solid #66cc00; /* 結果ボックスの枠線色（蛍光グリーン） */
   border-radius: 12px;
   padding: 15px;
   text-align: center;
   font-size: 1.5rem;
   font-weight: bold;
-  color: #888888; /* 「？？？」などのテキスト：灰色 */
+  color: #888888;            /* ？？？の文字色（灰色） */
   min-height: 65px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 15px rgba(102, 204, 0, 0.3);
+  box-shadow: 0 0 15px rgba(102, 204, 0, 0.4); /* 結果ボックスの光の色（蛍光グリーン） */
   margin-bottom: 8px;
 }
 
 .total-count {
   text-align: center;
   font-size: 0.85rem;
-  color: #aaa;
+  color: #aaa; /* 「選択中」の文字色 */
   margin-bottom: 12px;
 }
 
-/* くじ引きメインボタン（蛍光ピンク） */
+/* くじ引きメインボタン（蛍光グリーン） */
 .draw-btn {
   width: 100%;
-  background-color: #ff007f;
-  color: #ffffff;
+  background-color: #66cc00; /* くじを引くボタンの背景色（蛍光グリーン） */
+  color: #000000;            /* くじを引くボタンの文字色（黒） */
   border: none;
   border-radius: 12px;
   padding: 15px;
@@ -65,18 +65,18 @@ h1 {
   letter-spacing: 2px;
   cursor: pointer;
   margin-bottom: 14px;
-  box-shadow: 0 5px 0 #a80054, 0 0 12px rgba(255, 0, 127, 0.4);
+  box-shadow: 0 5px 0 #448800, 0 0 12px rgba(102, 204, 0, 0.4); /* くじを引くボタンの影色 */
   transition: transform 0.1s, box-shadow 0.1s, background-color 0.2s;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3); /* くじを引く文字の影色 */
 }
 
 .draw-btn:hover {
-  background-color: #ff1a8c;
+  background-color: #77e600; /* くじを引くボタン（ホバー時）の背景色 */
 }
 
 .draw-btn:active {
   transform: translateY(3px);
-  box-shadow: 0 2px 0 #a80054, 0 0 8px rgba(255, 0, 127, 0.3);
+  box-shadow: 0 2px 0 #448800, 0 0 8px rgba(102, 204, 0, 0.3); /* くじを引くボタン（押下時）の影色 */
 }
 
 /* 一括操作ボタンエリア */
@@ -103,52 +103,52 @@ h1 {
 
 /* 保存ボタン：水色 */
 .save-quick-btn {
-  background-color: #00bcd4;
-  border-color: #26c6da;
-  color: #000;
+  background-color: #00bcd4; /* 保存ボタンの背景色（水色） */
+  border-color: #26c6da;     /* 保存ボタンの枠線色 */
+  color: #000000;            /* 保存ボタンの文字色 */
 }
 
 .save-quick-btn:hover {
-  background-color: #00acc1;
+  background-color: #00acc1; /* 保存ボタン（ホバー時）の背景色 */
 }
 
 /* 全選択ボタン：灰色 */
 .select-all-btn {
-  background-color: #444444;
-  border-color: #555555;
-  color: #ffffff;
+  background-color: #444444; /* 全選択ボタンの背景色（灰色） */
+  border-color: #555555;     /* 全選択ボタンの枠線色 */
+  color: #ffffff;            /* 全選択ボタンの文字色 */
 }
 
 .select-all-btn:hover {
-  background-color: #555555;
+  background-color: #555555; /* 全選択ボタン（ホバー時）の背景色 */
 }
 
 /* 全解除ボタン：灰色 */
 .deselect-all-btn {
-  background-color: #444444;
-  border-color: #555555;
-  color: #ffffff;
+  background-color: #444444; /* 全解除ボタンの背景色（灰色） */
+  border-color: #555555;     /* 全解除ボタンの枠線色 */
+  color: #ffffff;            /* 全解除ボタンの文字色 */
 }
 
 .deselect-all-btn:hover {
-  background-color: #555555;
+  background-color: #555555; /* 全解除ボタン（ホバー時）の背景色 */
 }
 
 /* リセットボタン：蛍光ピンク */
 .reset-btn {
-  background-color: #ff007f;
-  border-color: #ff3399;
-  color: #ffffff;
+  background-color: #ff007f; /* リセットボタンの背景色（蛍光ピンク） */
+  border-color: #ff3399;     /* リセットボタンの枠線色 */
+  color: #ffffff;            /* リセットボタンの文字色 */
 }
 
 .reset-btn:hover {
-  background-color: #e60073;
+  background-color: #e60073; /* リセットボタン（ホバー時）の背景色 */
 }
 
 /* データセットエリア */
 .dataset-accordion {
-  background-color: #1e1e1e;
-  border: 1px solid #333;
+  background-color: #1e1e1e; /* データセット全体の背景色 */
+  border: 1px solid #333333;  /* データセット全体の枠線色 */
   border-radius: 8px;
   margin-bottom: 14px;
 
@@ -157,7 +157,7 @@ h1 {
     font-size: 0.85rem;
     font-weight: bold;
     cursor: pointer;
-    color: #66cc00;
+    color: #66cc00; /* データセット見出しの文字色（蛍光グリーン） */
     user-select: none;
   }
 }
@@ -167,17 +167,17 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  border-top: 1px solid #2a2a2a;
+  border-top: 1px solid #2a2a2a; /* データセット内区切り線の色 */
 }
 
 .dataset-card {
-  background: #262626;
+  background: #262626;          /* データセットカードの背景色 */
   border-radius: 6px;
   padding: 8px 10px;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  border-left: 3px solid #ff007f;
+  border-left: 3px solid #66cc00; /* データセットカード左端の線色（蛍光グリーン） */
 }
 
 .dataset-header {
@@ -197,18 +197,18 @@ h1 {
 .ds-edit {
   background: none;
   border: none;
-  color: #aaa;
+  color: #aaaaaa; /* 編集ボタンの文字色 */
   font-size: 0.7rem;
   cursor: pointer;
   padding: 2px 4px;
 
   &:hover {
-    color: #66cc00;
+    color: #66cc00; /* 編集ボタン（ホバー時）の文字色（蛍光グリーン） */
   }
 }
 
 .dataset-status {
-  color: #888;
+  color: #888888; /* 件数表示の文字色 */
   font-size: 0.75rem;
 }
 
@@ -217,23 +217,27 @@ h1 {
   gap: 4px;
 }
 
-.ds-btn {
-  font-size: 0.7rem;
-  padding: 5px 8px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
+.ds-save {
+  background: #ff007f; /* 個別保存ボタンの背景色（蛍光ピンク） */
+  color: #ffffff;      /* 個別保存ボタンの文字色 */
+  flex: 1;
 }
 
-.ds-save { background: #ff007f; color: #fff; flex: 1; }
-.ds-load { background: #66cc00; color: #000; flex: 1; }
-.ds-delete { background: #424242; color: #aaa; }
+.ds-load {
+  background: #66cc00; /* 読み込むボタンの背景色（蛍光グリーン） */
+  color: #000000;      /* 読み込むボタンの文字色（黒） */
+  flex: 1;
+}
+
+.ds-delete {
+  background: #424242; /* 削除ボタンの背景色 */
+  color: #aaaaaa;      /* 削除ボタンの文字色 */
+}
 
 /* 武器リストエリア */
 .weapon-container details {
-  background-color: #1e1e1e;
-  border: 1px solid #2a2a2a;
+  background-color: #1e1e1e; /* 武器カテゴリ枠の背景色 */
+  border: 1px solid #2a2a2a;  /* 武器カテゴリ枠の枠線色 */
   border-radius: 8px;
   margin-bottom: 8px;
   overflow: hidden;
@@ -245,7 +249,7 @@ h1 {
     user-select: none;
     display: flex;
     align-items: center;
-    color: #fff;
+    color: #ffffff; /* カテゴリ名の文字色 */
     font-weight: bold;
   }
 }
@@ -256,7 +260,7 @@ h1 {
   gap: 8px;
 
   input[type="checkbox"] {
-    accent-color: #ff007f;
+    accent-color: #66cc00; /* カテゴリチェックのチェック色（蛍光グリーン） */
     margin: 0;
     width: 15px;
     height: 15px;
@@ -265,8 +269,8 @@ h1 {
 
 .category-items {
   padding: 8px 12px 12px 12px;
-  background-color: #161616;
-  border-top: 1px solid #252525;
+  background-color: #161616; /* 武器一覧エリアの背景色 */
+  border-top: 1px solid #252525; /* 武器一覧区切り線の色 */
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
   gap: 8px;
@@ -277,10 +281,10 @@ h1 {
   align-items: center;
   gap: 6px;
   font-size: 0.78rem;
-  color: #ddd;
+  color: #dddddd; /* 武器名の文字色 */
 
   input[type="checkbox"] {
-    accent-color: #66cc00;
+    accent-color: #66cc00; /* 個別武器チェックのチェック色（蛍光グリーン） */
     margin: 0;
     cursor: pointer;
     width: 14px;
@@ -301,8 +305,8 @@ h1 {
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%) translateY(100px);
-  background: #ff007f;
-  color: #fff;
+  background: #66cc00; /* 通知ポップアップの背景色（蛍光グリーン） */
+  color: #000000;      /* 通知ポップアップの文字色（黒） */
   font-weight: bold;
   padding: 10px 20px;
   border-radius: 20px;
@@ -311,7 +315,7 @@ h1 {
   transition: all 0.3s ease;
   pointer-events: none;
   z-index: 1000;
-  box-shadow: 0 4px 15px rgba(255, 0, 127, 0.4);
+  box-shadow: 0 4px 15px rgba(102, 204, 0, 0.4); /* 通知ポップアップの影色（蛍光グリーン） */
 
   &.show {
     transform: translateX(-50%) translateY(0);
