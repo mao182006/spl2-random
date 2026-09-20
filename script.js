@@ -285,11 +285,12 @@ function renameDataset(id) {
   }
 }
 
-// ワンタップで即時保存（「データセット 1」に直接保存）
+// 保存ボタン（「データセット 1」へ即時上書き保存）
 function quickSave() {
   saveToDataset(1);
 }
 
+// リセットボタン（確認後、全選択状態へ戻す）
 function resetToDefault() {
   if (confirm('武器の選択状態を初期状態（全選択）に戻しますか？')) {
     toggleAll(true);

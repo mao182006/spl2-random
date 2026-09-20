@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>スプラ2 武器くじ</title>
+  <title>スプラ2 ナワバリ武器くじ</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,17 +11,19 @@
   <div class="container">
     <h1>スプラ2 ナワバリ武器くじ</h1>
     <div class="result-box" id="result">???</div>
-    
     <div class="total-count" id="totalCount">選択中: 0 / 0</div>
 
     <button class="draw-btn" onclick="drawWeapon()">くじを引く</button>
 
+    <!-- ボタンの並び順: 保存 / 全選択 / 全解除 / リセット -->
     <div class="controls">
+      <button class="sub-btn save-quick-btn" onclick="quickSave()">保存</button>
       <button class="sub-btn" onclick="toggleAll(true)">全選択</button>
       <button class="sub-btn" onclick="toggleAll(false)">全解除</button>
+      <button class="sub-btn reset-btn" onclick="resetToDefault()">リセット</button>
     </div>
 
-    <!-- データセット（武器種と同じアコーディオン形式） -->
+    <!-- データセットアコーディオン -->
     <details class="dataset-accordion">
       <summary>📁 データセット一覧</summary>
       <div class="dataset-body" id="datasetContainer"></div>
@@ -31,7 +33,7 @@
     <div class="weapon-container" id="weaponContainer"></div>
   </div>
 
-  <!-- ポップアップ通知 -->
+  <!-- 通知トースト -->
   <div id="toast" class="toast">メッセージ</div>
 
   <script src="script.js"></script>
