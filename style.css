@@ -26,6 +26,7 @@ h1 {
   letter-spacing: 1px;
 }
 
+/* 結果表示ボックス（蛍光グリーン枠＆ネオンシャドウ） */
 .result-box {
   background: #1e1e1e;
   border: 3px solid #66cc00; /* スプラ2 蛍光グリーン */
@@ -34,13 +35,14 @@ h1 {
   text-align: center;
   font-size: 1.5rem;
   font-weight: bold;
-  color: #ff007f; /* 蛍光ピンク */
+  color: #66cc00; /* 結果の文字色を蛍光グリーンに */
   min-height: 65px;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 0 15px rgba(102, 204, 0, 0.3);
   margin-bottom: 8px;
+  text-shadow: 0 0 8px rgba(102, 204, 0, 0.5);
 }
 
 .total-count {
@@ -50,25 +52,31 @@ h1 {
   margin-bottom: 12px;
 }
 
-/* くじ引きメインボタン（蛍光グリーン基調） */
+/* くじ引きメインボタン（蛍光ピンクに変更＋ネオン風立体立体デザイン） */
 .draw-btn {
   width: 100%;
-  background-color: #66cc00;
-  color: #000;
+  background-color: #ff007f; /* 蛍光ピンク */
+  color: #ffffff;
   border: none;
-  border-radius: 10px;
-  padding: 14px;
-  font-size: 1.2rem;
+  border-radius: 12px;
+  padding: 15px;
+  font-size: 1.3rem;
   font-weight: 900;
+  letter-spacing: 2px;
   cursor: pointer;
-  margin-bottom: 12px;
-  box-shadow: 0 4px 0 #448800;
-  transition: transform 0.1s, box-shadow 0.1s;
+  margin-bottom: 14px;
+  box-shadow: 0 5px 0 #a80054, 0 0 12px rgba(255, 0, 127, 0.4);
+  transition: transform 0.1s, box-shadow 0.1s, background-color 0.2s;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.draw-btn:hover {
+  background-color: #ff1a8c;
 }
 
 .draw-btn:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 0 #448800;
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #a80054, 0 0 8px rgba(255, 0, 127, 0.3);
 }
 
 /* 一括操作ボタンエリア（保存 / 全選択 / 全解除 / リセット） */
@@ -97,24 +105,35 @@ h1 {
 
 /* 保存ボタン */
 .save-quick-btn {
-  background-color: #ff007f;
-  border-color: #ff3399;
-  color: #fff;
+  background-color: #00bcd4; /* アクセント用シアン */
+  border-color: #26c6da;
+  color: #000;
 }
 
 .save-quick-btn:hover {
-  background-color: #e60073;
+  background-color: #00acc1;
 }
 
 /* 全選択ボタン */
 .select-all-btn {
-  background-color: #66cc00;
+  background-color: #66cc00; /* 蛍光グリーン */
   border-color: #88e62e;
   color: #000;
 }
 
 .select-all-btn:hover {
   background-color: #55aa00;
+}
+
+/* 全解除ボタン */
+.deselect-all-btn {
+  background-color: #2a2a2a;
+  border-color: #444;
+  color: #eee;
+}
+
+.deselect-all-btn:hover {
+  background-color: #3a3a3a;
 }
 
 /* リセットボタン */
