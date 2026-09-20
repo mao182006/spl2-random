@@ -17,15 +17,15 @@
 
     <!-- ボタンの並び順: [全選択] [保存] [全解除] [リセット] -->
     <div class="controls">
-      <button class="sub-btn" onclick="toggleAll(true)">全選択</button>
       <button class="sub-btn save-quick-btn" onclick="saveCurrentState()">保存</button>
+      <button class="sub-btn" onclick="toggleAll(true)">全選択</button>
       <button class="sub-btn" onclick="toggleAll(false)">全解除</button>
       <button class="sub-btn reset-btn" onclick="resetToDefault()">リセット</button>
     </div>
 
     <!-- データセットアコーディオン -->
     <details class="dataset-accordion">
-      <summary>📁 データセット一覧</summary>
+      <summary>データセット一覧</summary>
       <div class="dataset-body" id="datasetContainer"></div>
     </details>
 

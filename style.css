@@ -101,13 +101,13 @@ h1 {
 }
 
 .reset-btn {
-  background-color: #ad1457;
-  border-color: #e91e63;
+  background-color: #14ad2b;
+  border-color: #1ee92f;
   color: #fff;
 }
 
 .reset-btn:hover {
-  background-color: #c2185b;
+  background-color: #18c221;
 }
 
 /* データセットエリア */
@@ -190,7 +190,7 @@ h1 {
   font-weight: bold;
 }
 
-.ds-save { background: #00838f; color: #fff; flex: 1; }
+.ds-save { background: #019aa8; color: #fff; flex: 1; }
 .ds-load { background: #2e7d32; color: #fff; flex: 1; }
 .ds-delete { background: #424242; color: #aaa; }
 
@@ -257,7 +257,7 @@ h1 {
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%) translateY(100px);
-  background: rgba(0, 229, 255, 0.9);
+  background: rgba(0, 255, 42, 0.9);
   color: #000;
   font-weight: bold;
   padding: 8px 16px;
