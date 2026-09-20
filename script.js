@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadCurrentState(); // 再読み込み時に保存されていたチェック状態を復元
 });
 
-// 現在のチェック状態を保存（ローカルストレージへ直接保存）
+// 現在のチェック状態を保存（ローカルストレージへ保存）
 function saveCurrentState(showNotification = true) {
   const weaponCheckboxes = document.querySelectorAll('.weapon-cb');
   const currentState = {};
