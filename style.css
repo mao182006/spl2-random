@@ -26,13 +26,13 @@ h1 {
 
 .result-box {
   background: #1e1e1e;
-  border: 2px solid #00e5ff;
+  border: 2px solid #00ff40;
   border-radius: 8px;
   padding: 15px;
   text-align: center;
   font-size: 1.4rem;
   font-weight: bold;
-  color: #ff0055;
+  color: #00ff0d;
   min-height: 60px;
   display: flex;
   align-items: center;
@@ -78,7 +78,7 @@ h1 {
   color: #eee;
   font-size: 0.8rem;
   padding: 8px 0;
-  border: 1px solid #444;
+  border: 1px solid #444444;
   border-radius: 6px;
   cursor: pointer;
   flex: 1;
@@ -91,8 +91,8 @@ h1 {
 }
 
 .save-quick-btn {
-  background-color: #00838f;
-  border-color: #00bcd4;
+  background-color: #008f05;
+  border-color: #00d404;
   color: #fff;
 }
 
@@ -101,13 +101,13 @@ h1 {
 }
 
 .reset-btn {
-  background-color: #14ad2b;
-  border-color: #1ee92f;
+  background-color: #ad1475;
+  border-color: #e91ec7;
   color: #fff;
 }
 
 .reset-btn:hover {
-  background-color: #18c221;
+  background-color: #c2188c;
 }
 
 /* データセットエリア */
@@ -190,7 +190,7 @@ h1 {
   font-weight: bold;
 }
 
-.ds-save { background: #019aa8; color: #fff; flex: 1; }
+.ds-save { background: #019da8; color: #fff; flex: 1; }
 .ds-load { background: #2e7d32; color: #fff; flex: 1; }
 .ds-delete { background: #424242; color: #aaa; }
 
