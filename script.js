@@ -88,49 +88,56 @@ let datasets = [
   { id: 5, name: "データセット 5", data: null }
 ];
 
+// 初期化処理（DOM読み込み完了後に実行）
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('weaponContainer');
   let weaponIdCounter = 0;
 
   // 武器リスト生成
-  Object.keys(weaponCategories).forEach(catName => {
-    const weapons = weaponCategories[catName];
-    const details = document.createElement('details');
-    
-    const summary = document.createElement('summary');
-    summary.innerHTML = `
-      <span class="category-title">
-        <input type="checkbox" checked id="cat_${catName}">
-        <label for="cat_${catName}">${catName} (<span id="cat_count_${catName}">0/0</span>)</label>
-      </span>
-    `;
-
-    const catCheckbox = summary.querySelector(`#cat_${catName}`);
-    catCheckbox.addEventListener('click', (e) => e.stopPropagation());
-    catCheckbox.addEventListener('change', (e) => toggleCategory(catName, e.target.checked));
-
-    const itemsDiv = document.createElement('div');
-    itemsDiv.className = 'category-items';
-
-    weapons.forEach(weapon => {
-      const id = `w_${weaponIdCounter++}`;
-      const item = document.createElement('div');
-      item.className = 'weapon-item';
-      item.innerHTML = `
-        <input type="checkbox" class="weapon-cb cat-cb-${catName}" id="${id}" value="${weapon}" checked>
-        <label for="${id}">${weapon}</label>
+  if (container) {
+    Object.keys(weaponCategories).forEach(catName => {
+      const weapons = weaponCategories[catName];
+      const details = document.createElement('details');
+      
+      const summary = document.createElement('summary');
+      summary.innerHTML = `
+        <span class="category-title">
+          <input type="checkbox" checked id="cat_${catName}">
+          <label for="cat_${catName}">${catName} (<span id="cat_count_${catName}">0/0</span>)</label>
+        </span>
       `;
 
-      const cbInput = item.querySelector('input');
-      cbInput.addEventListener('change', () => updateCatCheckbox(catName));
+      const catCheckbox = summary.querySelector(`#cat_${catName}`);
+      if (catCheckbox) {
+        catCheckbox.addEventListener('click', (e) => e.stopPropagation());
+        catCheckbox.addEventListener('change', (e) => toggleCategory(catName, e.target.checked));
+      }
 
-      itemsDiv.appendChild(item);
+      const itemsDiv = document.createElement('div');
+      itemsDiv.className = 'category-items';
+
+      weapons.forEach(weapon => {
+        const id = `w_${weaponIdCounter++}`;
+        const item = document.createElement('div');
+        item.className = 'weapon-item';
+        item.innerHTML = `
+          <input type="checkbox" class="weapon-cb cat-cb-${catName}" id="${id}" value="${weapon}" checked>
+          <label for="${id}">${weapon}</label>
+        `;
+
+        const cbInput = item.querySelector('input');
+        if (cbInput) {
+          cbInput.addEventListener('change', () => updateCatCheckbox(catName));
+        }
+
+        itemsDiv.appendChild(item);
+      });
+
+      details.appendChild(summary);
+      details.appendChild(itemsDiv);
+      container.appendChild(details);
     });
-
-    details.appendChild(summary);
-    details.appendChild(itemsDiv);
-    container.appendChild(details);
-  });
+  }
 
   loadDatasetsFromStorage();
   renderDatasets();
@@ -190,6 +197,8 @@ function updateCounts() {
 // データセット描画
 function renderDatasets() {
   const container = document.getElementById('datasetContainer');
+  if (!container) return;
+  
   container.innerHTML = '';
 
   datasets.forEach(ds => {
@@ -284,6 +293,33 @@ function renameDataset(id) {
     target.name = newName.trim();
     saveDatasetsToStorage();
     renderDatasets();
+  }
+}
+
+// クイック保存
+function quickSave() {
+  let target = datasets.find(d => d.data === null);
+  
+  if (!target) {
+    const names = datasets.map((d, i) => `${i + 1}: ${d.name}`).join('\n');
+    const choice = prompt(`上書きするデータセットの番号を入力してください (1〜5):\n${names}`);
+    const index = parseInt(choice, 10) - 1;
+    
+    if (!isNaN(index) && datasets[index]) {
+      target = datasets[index];
+    } else {
+      return;
+    }
+  }
+
+  saveToDataset(target.id);
+}
+
+// リセット
+function resetToDefault() {
+  if (confirm('武器の選択状態を初期状態（全選択）に戻しますか？')) {
+    toggleAll(true);
+    showToast('選択状態をリセットしました');
   }
 }
 
