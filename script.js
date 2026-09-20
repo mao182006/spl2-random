@@ -88,12 +88,10 @@ let datasets = [
   { id: 5, name: "データセット 5", data: null }
 ];
 
-// 初期化処理（DOM読み込み完了後に実行）
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('weaponContainer');
   let weaponIdCounter = 0;
 
-  // 武器リスト生成
   if (container) {
     Object.keys(weaponCategories).forEach(catName => {
       const weapons = weaponCategories[catName];
@@ -144,14 +142,12 @@ document.addEventListener('DOMContentLoaded', () => {
   updateCounts();
 });
 
-// カテゴリ切り替え
 function toggleCategory(catName, isChecked) {
   const checkboxes = document.querySelectorAll(`.cat-cb-${catName}`);
   checkboxes.forEach(cb => cb.checked = isChecked);
   updateCounts();
 }
 
-// チェックボックス連動
 function updateCatCheckbox(catName) {
   const checkboxes = document.querySelectorAll(`.cat-cb-${catName}`);
   const catCb = document.getElementById(`cat_${catName}`);
@@ -163,14 +159,12 @@ function updateCatCheckbox(catName) {
   updateCounts();
 }
 
-// 全選択・全解除
 function toggleAll(status) {
   const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
   allCheckboxes.forEach(cb => cb.checked = status);
   updateCounts();
 }
 
-// カウント更新
 function updateCounts() {
   let totalWeapons = 0;
   let totalChecked = 0;
@@ -194,7 +188,6 @@ function updateCounts() {
   }
 }
 
-// データセット描画
 function renderDatasets() {
   const container = document.getElementById('datasetContainer');
   if (!container) return;
@@ -217,7 +210,7 @@ function renderDatasets() {
         <span class="dataset-status">${countText}</span>
       </div>
       <div class="dataset-btn-group">
-        <button class="ds-btn ds-save" onclick="saveToDataset(${ds.id})">現在の選択を保存</button>
+        <button class="ds-btn ds-save" onclick="saveToDataset(${ds.id})">上書き保存</button>
         ${isSaved ? `<button class="ds-btn ds-load" onclick="loadFromDataset(${ds.id})">読み込む</button>` : ''}
         ${isSaved ? `<button class="ds-btn ds-delete" onclick="deleteDataset(${ds.id})">✕</button>` : ''}
       </div>
@@ -227,7 +220,6 @@ function renderDatasets() {
   });
 }
 
-// 保存
 function saveToDataset(id) {
   const weaponCheckboxes = document.querySelectorAll('.weapon-cb');
   const currentState = {};
@@ -245,7 +237,6 @@ function saveToDataset(id) {
   }
 }
 
-// 呼び出し
 function loadFromDataset(id) {
   const target = datasets.find(d => d.id === id);
   if (!target || !target.data) return;
@@ -270,7 +261,6 @@ function loadFromDataset(id) {
   showToast(`「${target.name}」を読み込みました`);
 }
 
-// 削除
 function deleteDataset(id) {
   const target = datasets.find(d => d.id === id);
   if (!target || !target.data) return;
@@ -283,7 +273,6 @@ function deleteDataset(id) {
   }
 }
 
-// 名前変更
 function renameDataset(id) {
   const target = datasets.find(d => d.id === id);
   if (!target) return;
@@ -296,26 +285,11 @@ function renameDataset(id) {
   }
 }
 
-// クイック保存
+// ワンタップで即時保存（「データセット 1」に直接保存）
 function quickSave() {
-  let target = datasets.find(d => d.data === null);
-  
-  if (!target) {
-    const names = datasets.map((d, i) => `${i + 1}: ${d.name}`).join('\n');
-    const choice = prompt(`上書きするデータセットの番号を入力してください (1〜5):\n${names}`);
-    const index = parseInt(choice, 10) - 1;
-    
-    if (!isNaN(index) && datasets[index]) {
-      target = datasets[index];
-    } else {
-      return;
-    }
-  }
-
-  saveToDataset(target.id);
+  saveToDataset(1);
 }
 
-// リセット
 function resetToDefault() {
   if (confirm('武器の選択状態を初期状態（全選択）に戻しますか？')) {
     toggleAll(true);
@@ -323,7 +297,6 @@ function resetToDefault() {
   }
 }
 
-// ローカルストレージ処理
 function saveDatasetsToStorage() {
   try {
     localStorage.setItem(DATASET_STORAGE_KEY, JSON.stringify(datasets));
@@ -343,7 +316,6 @@ function loadDatasetsFromStorage() {
   }
 }
 
-// トースト通知
 function showToast(msg) {
   const toast = document.getElementById('toast');
   if (toast) {
@@ -355,7 +327,6 @@ function showToast(msg) {
   }
 }
 
-// くじ引き処理
 function drawWeapon() {
   const checkedBoxes = document.querySelectorAll('.weapon-cb:checked');
   
