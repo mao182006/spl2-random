@@ -17,16 +17,17 @@ body {
   max-width: 500px;
 }
 
+/* 題名：白 */
 h1 {
   font-size: 1.2rem;
   text-align: center;
   margin: 0 0 10px 0;
-  color: #ff007f; /* スプラ2 蛍光ピンク */
+  color: #ffffff;
   font-weight: 800;
   letter-spacing: 1px;
 }
 
-/* 結果表示ボックス（蛍光グリーン枠＆ネオンシャドウ） */
+/* 結果表示ボックス（？？？などの初期状態や結果テキスト） */
 .result-box {
   background: #1e1e1e;
   border: 3px solid #66cc00; /* スプラ2 蛍光グリーン */
@@ -35,14 +36,13 @@ h1 {
   text-align: center;
   font-size: 1.5rem;
   font-weight: bold;
-  color: #66cc00; /* 結果の文字色を蛍光グリーンに */
+  color: #888888; /* 「？？？」などのテキスト：灰色 */
   min-height: 65px;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 0 15px rgba(102, 204, 0, 0.3);
   margin-bottom: 8px;
-  text-shadow: 0 0 8px rgba(102, 204, 0, 0.5);
 }
 
 .total-count {
@@ -52,10 +52,10 @@ h1 {
   margin-bottom: 12px;
 }
 
-/* くじ引きメインボタン（蛍光ピンクに変更＋ネオン風立体立体デザイン） */
+/* くじ引きメインボタン（蛍光ピンク） */
 .draw-btn {
   width: 100%;
-  background-color: #ff007f; /* 蛍光ピンク */
+  background-color: #ff007f;
   color: #ffffff;
   border: none;
   border-radius: 12px;
@@ -79,7 +79,7 @@ h1 {
   box-shadow: 0 2px 0 #a80054, 0 0 8px rgba(255, 0, 127, 0.3);
 }
 
-/* 一括操作ボタンエリア（保存 / 全選択 / 全解除 / リセット） */
+/* 一括操作ボタンエリア */
 .controls {
   display: flex;
   gap: 0.4rem;
@@ -87,11 +87,9 @@ h1 {
 }
 
 .sub-btn {
-  background-color: #2a2a2a;
-  color: #eee;
   font-size: 0.8rem;
   padding: 9px 0;
-  border: 1px solid #444;
+  border: 1px solid;
   border-radius: 6px;
   cursor: pointer;
   flex: 1;
@@ -103,9 +101,9 @@ h1 {
   opacity: 0.8;
 }
 
-/* 保存ボタン */
+/* 保存ボタン：水色 */
 .save-quick-btn {
-  background-color: #00bcd4; /* アクセント用シアン */
+  background-color: #00bcd4;
   border-color: #26c6da;
   color: #000;
 }
@@ -114,37 +112,37 @@ h1 {
   background-color: #00acc1;
 }
 
-/* 全選択ボタン */
+/* 全選択ボタン：灰色 */
 .select-all-btn {
-  background-color: #66cc00; /* 蛍光グリーン */
-  border-color: #88e62e;
-  color: #000;
+  background-color: #444444;
+  border-color: #555555;
+  color: #ffffff;
 }
 
 .select-all-btn:hover {
-  background-color: #55aa00;
+  background-color: #555555;
 }
 
-/* 全解除ボタン */
+/* 全解除ボタン：灰色 */
 .deselect-all-btn {
-  background-color: #2a2a2a;
-  border-color: #444;
-  color: #eee;
+  background-color: #444444;
+  border-color: #555555;
+  color: #ffffff;
 }
 
 .deselect-all-btn:hover {
-  background-color: #3a3a3a;
+  background-color: #555555;
 }
 
-/* リセットボタン */
+/* リセットボタン：蛍光ピンク */
 .reset-btn {
-  background-color: #444;
-  border-color: #666;
-  color: #fff;
+  background-color: #ff007f;
+  border-color: #ff3399;
+  color: #ffffff;
 }
 
 .reset-btn:hover {
-  background-color: #555;
+  background-color: #e60073;
 }
 
 /* データセットエリア */
