@@ -79,6 +79,7 @@ const weaponCategories = {
 };
 
 const DATASET_STORAGE_KEY = 'spla2_datasets_v1';
+const CURRENT_STATE_STORAGE_KEY = 'spla2_current_state_v1';
 
 let datasets = [
   { id: 1, name: "データセット 1", data: null },
@@ -125,7 +126,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const cbInput = item.querySelector('input');
         if (cbInput) {
-          cbInput.addEventListener('change', () => updateCatCheckbox(catName));
+          cbInput.addEventListener('change', () => {
+            updateCatCheckbox(catName);
+            autoSaveCurrentState();
+          });
         }
 
         itemsDiv.appendChild(item);
@@ -139,13 +143,68 @@ document.addEventListener('DOMContentLoaded', () => {
 
   loadDatasetsFromStorage();
   renderDatasets();
-  updateCounts();
+  loadCurrentState(); // 再読み込み時に保存されていたチェック状態を復元
 });
+
+// 現在のチェック状態を保存（ローカルストレージへ直接保存）
+function saveCurrentState(showNotification = true) {
+  const weaponCheckboxes = document.querySelectorAll('.weapon-cb');
+  const currentState = {};
+
+  weaponCheckboxes.forEach(cb => {
+    currentState[cb.value] = cb.checked;
+  });
+
+  try {
+    localStorage.setItem(CURRENT_STATE_STORAGE_KEY, JSON.stringify(currentState));
+    if (showNotification) {
+      showToast('現在の選択状態を保存しました');
+    }
+  } catch (e) {
+    console.error('保存エラー:', e);
+  }
+}
+
+// チェック操作時にバックグラウンドで自動保存
+function autoSaveCurrentState() {
+  saveCurrentState(false);
+}
+
+// ページを開いた時・再読み込み時に直前の状態を呼び出す
+function loadCurrentState() {
+  try {
+    const savedState = localStorage.getItem(CURRENT_STATE_STORAGE_KEY);
+    if (savedState) {
+      const stateObj = JSON.parse(savedState);
+      const weaponCheckboxes = document.querySelectorAll('.weapon-cb');
+
+      weaponCheckboxes.forEach(cb => {
+        if (stateObj.hasOwnProperty(cb.value)) {
+          cb.checked = stateObj[cb.value];
+        }
+      });
+
+      // 親カテゴリチェックボックスの調整
+      Object.keys(weaponCategories).forEach(catName => {
+        const checkboxes = document.querySelectorAll(`.cat-cb-${catName}`);
+        const catCb = document.getElementById(`cat_${catName}`);
+        const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+        if (catCb) {
+          catCb.checked = (checkedCount === checkboxes.length);
+        }
+      });
+    }
+  } catch (e) {
+    console.error('読み込みエラー:', e);
+  }
+  updateCounts();
+}
 
 function toggleCategory(catName, isChecked) {
   const checkboxes = document.querySelectorAll(`.cat-cb-${catName}`);
   checkboxes.forEach(cb => cb.checked = isChecked);
   updateCounts();
+  autoSaveCurrentState();
 }
 
 function updateCatCheckbox(catName) {
@@ -163,6 +222,7 @@ function toggleAll(status) {
   const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
   allCheckboxes.forEach(cb => cb.checked = status);
   updateCounts();
+  autoSaveCurrentState();
 }
 
 function updateCounts() {
@@ -188,6 +248,8 @@ function updateCounts() {
   }
 }
 
+/* --- データセット機能 --- */
+
 function renderDatasets() {
   const container = document.getElementById('datasetContainer');
   if (!container) return;
@@ -210,7 +272,7 @@ function renderDatasets() {
         <span class="dataset-status">${countText}</span>
       </div>
       <div class="dataset-btn-group">
-        <button class="ds-btn ds-save" onclick="saveToDataset(${ds.id})">上書き保存</button>
+        <button class="ds-btn ds-save" onclick="saveToDataset(${ds.id})">保存</button>
         ${isSaved ? `<button class="ds-btn ds-load" onclick="loadFromDataset(${ds.id})">読み込む</button>` : ''}
         ${isSaved ? `<button class="ds-btn ds-delete" onclick="deleteDataset(${ds.id})">✕</button>` : ''}
       </div>
@@ -258,6 +320,7 @@ function loadFromDataset(id) {
   });
 
   updateCounts();
+  autoSaveCurrentState();
   showToast(`「${target.name}」を読み込みました`);
 }
 
@@ -283,11 +346,6 @@ function renameDataset(id) {
     saveDatasetsToStorage();
     renderDatasets();
   }
-}
-
-// 保存ボタン（「データセット 1」へ即時上書き保存）
-function quickSave() {
-  saveToDataset(1);
 }
 
 // リセットボタン（確認後、全選択状態へ戻す）
