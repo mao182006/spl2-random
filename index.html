@@ -4,10 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>スプラ2 武器くじ</title>
-  <!-- CSSファイルの読み込み -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+  <!-- 右上のデータセットボタン -->
+  <button class="menu-toggle-btn" id="openMenuBtn">📁 データセット</button>
 
   <div class="container">
     <h1>スプラ2 ナワバリ武器くじ</h1>
@@ -22,21 +24,25 @@
       <button class="sub-btn" onclick="toggleAll(false)">全解除</button>
     </div>
 
-    <!-- 5つのデータセット領域 -->
-    <div class="dataset-section">
-      <div class="dataset-title">データセット（保存枠）</div>
-      <div id="datasetContainer"></div>
-    </div>
-
-    <!-- ポップアップ通知 -->
-    <div id="toast" class="toast">メッセージ</div>
-
     <!-- 武器リスト表示領域 -->
     <div class="weapon-container" id="weaponContainer"></div>
   </div>
 
-  <!-- JavaScriptファイルの読み込み -->
-  <script src="script.js"></script>
+  <!-- 右からスライドするデータセットパネル -->
+  <div class="dataset-panel" id="datasetPanel">
+    <div class="panel-header">
+      <h2>データセット一覧</h2>
+      <button class="close-btn" id="closeMenuBtn">×</button>
+    </div>
+    <div class="panel-body" id="datasetContainer"></div>
+  </div>
 
+  <!-- パネル背景のオーバーレイ -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- ポップアップ通知 -->
+  <div id="toast" class="toast">メッセージ</div>
+
+  <script src="script.js"></script>
 </body>
 </html>

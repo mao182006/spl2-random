@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('weaponContainer');
   let weaponIdCounter = 0;
 
-  // 武器リスト動的生成
+  // 武器リスト生成
   Object.keys(weaponCategories).forEach(catName => {
     const weapons = weaponCategories[catName];
     const details = document.createElement('details');
@@ -131,6 +131,26 @@ document.addEventListener('DOMContentLoaded', () => {
     details.appendChild(itemsDiv);
     container.appendChild(details);
   });
+
+  // サイドパネル制御
+  const openBtn = document.getElementById('openMenuBtn');
+  const closeBtn = document.getElementById('closeMenuBtn');
+  const panel = document.getElementById('datasetPanel');
+  const overlay = document.getElementById('overlay');
+
+  const openPanel = () => {
+    panel.classList.add('open');
+    overlay.classList.add('show');
+  };
+
+  const closePanel = () => {
+    panel.classList.remove('open');
+    overlay.classList.remove('show');
+  };
+
+  openBtn.addEventListener('click', openPanel);
+  closeBtn.addEventListener('click', closePanel);
+  overlay.addEventListener('click', closePanel);
 
   loadDatasetsFromStorage();
   renderDatasets();
@@ -197,20 +217,20 @@ function renderDatasets() {
     card.className = 'dataset-card';
 
     const isSaved = ds.data !== null;
-    const countText = isSaved ? `（${Object.values(ds.data).filter(v => v).length}種選択）` : '（空っぽ）';
+    const countText = isSaved ? `（${Object.values(ds.data).filter(v => v).length}種）` : '（未保存）';
 
     card.innerHTML = `
       <div class="dataset-header">
         <div class="dataset-name-area">
           <span>${ds.name}</span>
-          <button class="ds-btn ds-edit" onclick="renameDataset(${ds.id})">名前変更</button>
+          <button class="ds-edit" onclick="renameDataset(${ds.id})">編集</button>
         </div>
         <span class="dataset-status">${countText}</span>
       </div>
       <div class="dataset-btn-group">
-        <button class="ds-btn ds-save" onclick="saveToDataset(${ds.id})">ここに保存</button>
-        ${isSaved ? `<button class="ds-btn ds-load" onclick="loadFromDataset(${ds.id})">呼び出し</button>` : ''}
-        ${isSaved ? `<button class="ds-btn ds-delete" onclick="deleteDataset(${ds.id})">削除</button>` : ''}
+        <button class="ds-btn ds-save" onclick="saveToDataset(${ds.id})">現在の状態を保存</button>
+        ${isSaved ? `<button class="ds-btn ds-load" onclick="loadFromDataset(${ds.id})">読み込む</button>` : ''}
+        ${isSaved ? `<button class="ds-btn ds-delete" onclick="deleteDataset(${ds.id})">✕</button>` : ''}
       </div>
     `;
 
@@ -258,7 +278,7 @@ function loadFromDataset(id) {
   });
 
   updateCounts();
-  showToast(`「${target.name}」を呼び出しました`);
+  showToast(`「${target.name}」を読み込みました`);
 }
 
 // 削除
@@ -279,7 +299,7 @@ function renameDataset(id) {
   const target = datasets.find(d => d.id === id);
   if (!target) return;
 
-  const newName = prompt('データセットの新しい名前を入力してください:', target.name);
+  const newName = prompt('新しい名前を入力してください:', target.name);
   if (newName !== null && newName.trim() !== '') {
     target.name = newName.trim();
     saveDatasetsToStorage();
@@ -287,7 +307,7 @@ function renameDataset(id) {
   }
 }
 
-// ローカルストレージ
+// ローカルストレージ処理
 function saveDatasetsToStorage() {
   try {
     localStorage.setItem(DATASET_STORAGE_KEY, JSON.stringify(datasets));
@@ -307,7 +327,7 @@ function loadDatasetsFromStorage() {
   }
 }
 
-// トースト表示
+// トースト通知
 function showToast(msg) {
   const toast = document.getElementById('toast');
   if (toast) {
