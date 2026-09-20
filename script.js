@@ -10,7 +10,7 @@ const weaponCategories = {
     "N-ZAP85", "N-ZAP89", "N-ZAP83",
     "プライムシューター", "プライムシューターコラボ", "プライムシューターベッチュー",
     ".96ガロン", ".96ガロンデコ",
-    "ジェットスイーパー", "ジェットスイーパーカスタム",
+    "ジェットスイーパー", "ジェットスイーパーカスタム"
   ],
   "ブラスター": [
     "ヒーローブラスター レプリカ",
@@ -34,7 +34,7 @@ const weaponCategories = {
   "フデ": [
     "ヒーローブラシ レプリカ",
     "パブロ", "パブロ・ヒュー", "パーマネント・パブロ",
-    "ホクサイ", "ホクサイ・ヒュー", "ホクサイベッチュー", 
+    "ホクサイ", "ホクサイ・ヒュー", "ホクサイベッチュー"
   ],
   "チャージャー": [
     "ヒーローチャージャー レプリカ", 
@@ -60,7 +60,7 @@ const weaponCategories = {
     "バレルスピナー", "バレルスピナーデコ", "バレルスピナーリミックス",
     "ハイドラント", "ハイドラントカスタム",
     "クーゲルシュライバー", "クーゲルシュライバー・ヒュー", 
-    "ノーチラス47", "ノーチラス79", 
+    "ノーチラス47", "ノーチラス79"
   ],
   "マニューバー": [
     "ヒーローマニューバー レプリカ",
@@ -80,7 +80,6 @@ const weaponCategories = {
 
 const DATASET_STORAGE_KEY = 'spla2_datasets_v1';
 
-// 初期状態の5つのデータセット（空っぽ）
 let datasets = [
   { id: 1, name: "データセット 1", data: null },
   { id: 2, name: "データセット 2", data: null },
@@ -93,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('weaponContainer');
   let weaponIdCounter = 0;
 
-  // 武器リスト生成
+  // 武器リスト動的生成
   Object.keys(weaponCategories).forEach(catName => {
     const weapons = weaponCategories[catName];
     const details = document.createElement('details');
@@ -133,7 +132,6 @@ document.addEventListener('DOMContentLoaded', () => {
     container.appendChild(details);
   });
 
-  // データセットの読み込みと表示
   loadDatasetsFromStorage();
   renderDatasets();
   updateCounts();
@@ -189,8 +187,7 @@ function updateCounts() {
   }
 }
 
-// --- データセット制御処理 ---
-
+// データセット描画
 function renderDatasets() {
   const container = document.getElementById('datasetContainer');
   container.innerHTML = '';
@@ -221,7 +218,7 @@ function renderDatasets() {
   });
 }
 
-// データセットに現在のチェック状態を保存
+// 保存
 function saveToDataset(id) {
   const weaponCheckboxes = document.querySelectorAll('.weapon-cb');
   const currentState = {};
@@ -239,7 +236,7 @@ function saveToDataset(id) {
   }
 }
 
-// データセットから呼び出し（適用）
+// 呼び出し
 function loadFromDataset(id) {
   const target = datasets.find(d => d.id === id);
   if (!target || !target.data) return;
@@ -264,7 +261,7 @@ function loadFromDataset(id) {
   showToast(`「${target.name}」を呼び出しました`);
 }
 
-// データセットの中身を削除
+// 削除
 function deleteDataset(id) {
   const target = datasets.find(d => d.id === id);
   if (!target || !target.data) return;
@@ -277,7 +274,7 @@ function deleteDataset(id) {
   }
 }
 
-// データセットの名前を変更
+// 名前変更
 function renameDataset(id) {
   const target = datasets.find(d => d.id === id);
   if (!target) return;
@@ -290,7 +287,7 @@ function renameDataset(id) {
   }
 }
 
-// ストレージ保存・読み込み
+// ローカルストレージ
 function saveDatasetsToStorage() {
   try {
     localStorage.setItem(DATASET_STORAGE_KEY, JSON.stringify(datasets));
@@ -310,7 +307,7 @@ function loadDatasetsFromStorage() {
   }
 }
 
-// トースト通知
+// トースト表示
 function showToast(msg) {
   const toast = document.getElementById('toast');
   if (toast) {
