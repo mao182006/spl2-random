@@ -78,13 +78,22 @@ const weaponCategories = {
   ]
 };
 
-// 保存時の識別キー（新バージョンに更新）
-const STORAGE_KEY = 'spla2_weapon_selection_v2';
+const DATASET_STORAGE_KEY = 'spla2_datasets_v1';
+
+// 初期状態の5つのデータセット（空っぽ）
+let datasets = [
+  { id: 1, name: "データセット 1", data: null },
+  { id: 2, name: "データセット 2", data: null },
+  { id: 3, name: "データセット 3", data: null },
+  { id: 4, name: "データセット 4", data: null },
+  { id: 5, name: "データセット 5", data: null }
+];
 
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('weaponContainer');
   let weaponIdCounter = 0;
 
+  // 武器リスト生成
   Object.keys(weaponCategories).forEach(catName => {
     const weapons = weaponCategories[catName];
     const details = document.createElement('details');
@@ -98,14 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
 
     const catCheckbox = summary.querySelector(`#cat_${catName}`);
-    
-    catCheckbox.addEventListener('click', (e) => {
-      e.stopPropagation();
-    });
-
-    catCheckbox.addEventListener('change', (e) => {
-      toggleCategory(catName, e.target.checked);
-    });
+    catCheckbox.addEventListener('click', (e) => e.stopPropagation());
+    catCheckbox.addEventListener('change', (e) => toggleCategory(catName, e.target.checked));
 
     const itemsDiv = document.createElement('div');
     itemsDiv.className = 'category-items';
@@ -120,9 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
 
       const cbInput = item.querySelector('input');
-      cbInput.addEventListener('change', () => {
-        updateCatCheckbox(catName);
-      });
+      cbInput.addEventListener('change', () => updateCatCheckbox(catName));
 
       itemsDiv.appendChild(item);
     });
@@ -132,19 +133,20 @@ document.addEventListener('DOMContentLoaded', () => {
     container.appendChild(details);
   });
 
-  // 保存状態の復元
-  loadSavedState();
+  // データセットの読み込みと表示
+  loadDatasetsFromStorage();
+  renderDatasets();
+  updateCounts();
 });
 
-// カテゴリ一括切り替え
+// カテゴリ切り替え
 function toggleCategory(catName, isChecked) {
   const checkboxes = document.querySelectorAll(`.cat-cb-${catName}`);
   checkboxes.forEach(cb => cb.checked = isChecked);
   updateCounts();
-  saveState();
 }
 
-// 個別武器変更
+// チェックボックス連動
 function updateCatCheckbox(catName) {
   const checkboxes = document.querySelectorAll(`.cat-cb-${catName}`);
   const catCb = document.getElementById(`cat_${catName}`);
@@ -154,7 +156,6 @@ function updateCatCheckbox(catName) {
     catCb.checked = (checkedCount === checkboxes.length);
   }
   updateCounts();
-  saveState();
 }
 
 // 全選択・全解除
@@ -162,10 +163,9 @@ function toggleAll(status) {
   const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
   allCheckboxes.forEach(cb => cb.checked = status);
   updateCounts();
-  saveState();
 }
 
-// カウント表示更新
+// カウント更新
 function updateCounts() {
   let totalWeapons = 0;
   let totalChecked = 0;
@@ -189,59 +189,136 @@ function updateCounts() {
   }
 }
 
-// チェック状態の保存処理
-function saveState() {
+// --- データセット制御処理 ---
+
+function renderDatasets() {
+  const container = document.getElementById('datasetContainer');
+  container.innerHTML = '';
+
+  datasets.forEach(ds => {
+    const card = document.createElement('div');
+    card.className = 'dataset-card';
+
+    const isSaved = ds.data !== null;
+    const countText = isSaved ? `（${Object.values(ds.data).filter(v => v).length}種選択）` : '（空っぽ）';
+
+    card.innerHTML = `
+      <div class="dataset-header">
+        <div class="dataset-name-area">
+          <span>${ds.name}</span>
+          <button class="ds-btn ds-edit" onclick="renameDataset(${ds.id})">名前変更</button>
+        </div>
+        <span class="dataset-status">${countText}</span>
+      </div>
+      <div class="dataset-btn-group">
+        <button class="ds-btn ds-save" onclick="saveToDataset(${ds.id})">ここに保存</button>
+        ${isSaved ? `<button class="ds-btn ds-load" onclick="loadFromDataset(${ds.id})">呼び出し</button>` : ''}
+        ${isSaved ? `<button class="ds-btn ds-delete" onclick="deleteDataset(${ds.id})">削除</button>` : ''}
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+// データセットに現在のチェック状態を保存
+function saveToDataset(id) {
   const weaponCheckboxes = document.querySelectorAll('.weapon-cb');
-  const savedState = {};
+  const currentState = {};
 
   weaponCheckboxes.forEach(cb => {
-    savedState[cb.value] = cb.checked;
+    currentState[cb.value] = cb.checked;
   });
 
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(savedState));
-  } catch (e) {
-    console.error('保存に失敗しました:', e);
+  const target = datasets.find(d => d.id === id);
+  if (target) {
+    target.data = currentState;
+    saveDatasetsToStorage();
+    renderDatasets();
+    showToast(`「${target.name}」に保存しました`);
   }
 }
 
-// チェック状態の読み込み処理
-function loadSavedState() {
-  try {
-    const savedData = localStorage.getItem(STORAGE_KEY);
-    
-    if (savedData) {
-      const savedState = JSON.parse(savedData);
-      const weaponCheckboxes = document.querySelectorAll('.weapon-cb');
+// データセットから呼び出し（適用）
+function loadFromDataset(id) {
+  const target = datasets.find(d => d.id === id);
+  if (!target || !target.data) return;
 
-      weaponCheckboxes.forEach(cb => {
-        if (savedState.hasOwnProperty(cb.value)) {
-          cb.checked = savedState[cb.value];
-        }
-      });
-
-      // 各カテゴリヘッダーのチェック状態を同期
-      Object.keys(weaponCategories).forEach(catName => {
-        const checkboxes = document.querySelectorAll(`.cat-cb-${catName}`);
-        const catCb = document.getElementById(`cat_${catName}`);
-        const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
-        if (catCb) {
-          catCb.checked = (checkedCount === checkboxes.length);
-        }
-      });
+  const weaponCheckboxes = document.querySelectorAll('.weapon-cb');
+  weaponCheckboxes.forEach(cb => {
+    if (target.data.hasOwnProperty(cb.value)) {
+      cb.checked = target.data[cb.value];
     }
-  } catch (e) {
-    console.error('読み込みに失敗しました:', e);
-  }
+  });
+
+  Object.keys(weaponCategories).forEach(catName => {
+    const checkboxes = document.querySelectorAll(`.cat-cb-${catName}`);
+    const catCb = document.getElementById(`cat_${catName}`);
+    const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+    if (catCb) {
+      catCb.checked = (checkedCount === checkboxes.length);
+    }
+  });
 
   updateCounts();
+  showToast(`「${target.name}」を呼び出しました`);
 }
 
-// 保存データのリセット処理
-function resetSavedState() {
-  if (confirm('保存データを初期化（全選択）しますか？')) {
-    localStorage.removeItem(STORAGE_KEY);
-    toggleAll(true);
+// データセットの中身を削除
+function deleteDataset(id) {
+  const target = datasets.find(d => d.id === id);
+  if (!target || !target.data) return;
+
+  if (confirm(`「${target.name}」の保存データを削除しますか？`)) {
+    target.data = null;
+    saveDatasetsToStorage();
+    renderDatasets();
+    showToast(`「${target.name}」を削除しました`);
+  }
+}
+
+// データセットの名前を変更
+function renameDataset(id) {
+  const target = datasets.find(d => d.id === id);
+  if (!target) return;
+
+  const newName = prompt('データセットの新しい名前を入力してください:', target.name);
+  if (newName !== null && newName.trim() !== '') {
+    target.name = newName.trim();
+    saveDatasetsToStorage();
+    renderDatasets();
+  }
+}
+
+// ストレージ保存・読み込み
+function saveDatasetsToStorage() {
+  try {
+    localStorage.setItem(DATASET_STORAGE_KEY, JSON.stringify(datasets));
+  } catch (e) {
+    console.error('保存エラー:', e);
+  }
+}
+
+function loadDatasetsFromStorage() {
+  try {
+    const saved = localStorage.getItem(DATASET_STORAGE_KEY);
+    if (saved) {
+      datasets = JSON.parse(saved);
+    }
+  } catch (e) {
+    console.error('読み込みエラー:', e);
+  }
+}
+
+// トースト通知
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  if (toast) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 2000);
   }
 }
 
