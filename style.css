@@ -65,7 +65,7 @@ h1 {
   letter-spacing: 2px;
   cursor: pointer;
   margin-bottom: 14px;
-  box-shadow: 0 5px 0 #448800, 0 0 12px rgba(102, 204, 0, 0.4); /* くじを引くボタンの影色 */
+  box-shadow: 0 5px 0 #448800, 0 0 15px rgba(102, 204, 0, 0.5); /* くじを引くボタンの影色（蛍光グリーン） */
   transition: transform 0.1s, box-shadow 0.1s, background-color 0.2s;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3); /* くじを引く文字の影色 */
 }
@@ -134,7 +134,7 @@ h1 {
   background-color: #555555; /* 全解除ボタン（ホバー時）の背景色 */
 }
 
-/* リセットボタン：蛍光ピンク */
+/* リセットボタン：蛍光ピンク（アクセント用に残した唯一のピンク） */
 .reset-btn {
   background-color: #ff007f; /* リセットボタンの背景色（蛍光ピンク） */
   border-color: #ff3399;     /* リセットボタンの枠線色 */
@@ -218,15 +218,24 @@ h1 {
 }
 
 .ds-save {
-  background: #ff007f; /* 個別保存ボタンの背景色（蛍光ピンク） */
-  color: #ffffff;      /* 個別保存ボタンの文字色 */
+  background: #333333; /* 個別保存ボタンの背景色（暗い灰色） */
+  color: #66cc00;      /* 個別保存ボタンの文字色（蛍光グリーン） */
+  border: 1px solid #66cc00; /* 個別保存ボタンの枠線（蛍光グリーン） */
   flex: 1;
+}
+
+.ds-save:hover {
+  background: #444444; /* 個別保存ボタン（ホバー時）の背景色 */
 }
 
 .ds-load {
   background: #66cc00; /* 読み込むボタンの背景色（蛍光グリーン） */
   color: #000000;      /* 読み込むボタンの文字色（黒） */
   flex: 1;
+}
+
+.ds-load:hover {
+  background: #77e600; /* 読み込むボタン（ホバー時）の背景色 */
 }
 
 .ds-delete {
