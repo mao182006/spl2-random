@@ -4,7 +4,6 @@
   --text-color: #ffffff;
   --accent-color: #00e676;
   --category-bg: #2a2a2a;
-  --panel-bg: #222222;
 }
 
 body {
@@ -26,7 +25,6 @@ body {
   text-align: center;
   width: 100%;
   max-width: 440px;
-  margin-top: 2.5rem;
 }
 
 h1 {
@@ -93,23 +91,14 @@ h1 {
   background-color: #444;
 }
 
-/* 武器リスト領域 */
-.weapon-container {
-  max-height: 380px;
-  overflow-y: auto;
-  text-align: left;
-  border: 1px solid #333;
-  border-radius: 8px;
-  background-color: #181818;
-  padding: 0.5rem;
-}
-
+/* アコーディオン共通スタイル */
 details {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.8rem;
   border: 1px solid #333;
   border-radius: 6px;
   background-color: var(--category-bg);
   overflow: hidden;
+  text-align: left;
 }
 
 summary {
@@ -144,6 +133,85 @@ details[open] summary::after {
   color: var(--accent-color);
 }
 
+/* データセットエリア固有 */
+.dataset-accordion {
+  border-color: #444;
+}
+
+.dataset-accordion summary {
+  color: var(--accent-color);
+}
+
+.dataset-body {
+  padding: 0.8rem;
+  background-color: #181818;
+}
+
+.dataset-card {
+  background-color: #252525;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 0.6rem;
+  margin-bottom: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.dataset-card:last-child {
+  margin-bottom: 0;
+}
+
+.dataset-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dataset-name-area {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.dataset-status {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.dataset-btn-group {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.ds-btn {
+  border: none;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  flex: 1;
+}
+
+.ds-save { background-color: #00bcd4; color: #000; }
+.ds-load { background-color: #00e676; color: #000; }
+.ds-delete { background-color: #e91e63; color: #fff; flex: 0; }
+.ds-edit { background-color: #444; color: #fff; padding: 0.1rem 0.3rem; font-size: 0.7rem; border-radius: 3px; border: none; cursor: pointer; }
+
+/* 武器リストエリア */
+.weapon-container {
+  max-height: 320px;
+  overflow-y: auto;
+  text-align: left;
+  border: 1px solid #333;
+  border-radius: 8px;
+  background-color: #181818;
+  padding: 0.5rem;
+}
+
 .category-title {
   display: flex;
   align-items: center;
@@ -173,151 +241,6 @@ summary input {
   cursor: pointer;
 }
 
-/* 右上のボタン */
-.menu-toggle-btn {
-  position: fixed;
-  top: 15px;
-  right: 15px;
-  background-color: #2a2a2a;
-  color: var(--accent-color);
-  border: 1px solid var(--accent-color);
-  padding: 0.5rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: bold;
-  cursor: pointer;
-  z-index: 90;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}
-
-.menu-toggle-btn:hover {
-  background-color: var(--accent-color);
-  color: #000;
-}
-
-/* サイドスライドパネル */
-.dataset-panel {
-  position: fixed;
-  top: 0;
-  right: -320px;
-  width: 300px;
-  height: 100%;
-  background-color: var(--panel-bg);
-  box-shadow: -5px 0 15px rgba(0,0,0,0.5);
-  transition: right 0.3s ease;
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-}
-
-.dataset-panel.open {
-  right: 0;
-}
-
-.panel-header {
-  padding: 1rem;
-  border-bottom: 1px solid #333;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.panel-header h2 {
-  font-size: 1rem;
-  margin: 0;
-  color: #fff;
-}
-
-.close-btn {
-  background: none;
-  border: none;
-  color: #888;
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0;
-  line-height: 1;
-}
-
-.close-btn:hover {
-  color: #fff;
-}
-
-.panel-body {
-  padding: 1rem;
-  overflow-y: auto;
-  flex: 1;
-}
-
-/* オーバーレイ */
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s, visibility 0.3s;
-  z-index: 95;
-}
-
-.overlay.show {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* データセットカード */
-.dataset-card {
-  background-color: #181818;
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 0.8rem;
-  margin-bottom: 0.8rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.dataset-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.dataset-name-area {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  font-weight: bold;
-  font-size: 0.85rem;
-}
-
-.dataset-status {
-  font-size: 0.75rem;
-  color: #888;
-}
-
-.dataset-btn-group {
-  display: flex;
-  gap: 0.3rem;
-}
-
-.ds-btn {
-  border: none;
-  padding: 0.3rem 0.5rem;
-  font-size: 0.75rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  flex: 1;
-}
-
-.ds-save { background-color: #00bcd4; color: #000; }
-.ds-load { background-color: #00e676; color: #000; }
-.ds-delete { background-color: #e91e63; color: #fff; flex: 0; }
-.ds-edit { background-color: #444; color: #fff; padding: 0.1rem 0.3rem; font-size: 0.7rem; border-radius: 3px; border: none; cursor: pointer; }
-
 /* トースト通知 */
 .toast {
   visibility: hidden;
@@ -328,7 +251,7 @@ summary input {
   border-radius: 4px;
   padding: 8px;
   position: fixed;
-  z-index: 110;
+  z-index: 100;
   left: 50%;
   bottom: 30px;
   transform: translateX(-50%);

@@ -132,26 +132,6 @@ document.addEventListener('DOMContentLoaded', () => {
     container.appendChild(details);
   });
 
-  // サイドパネル制御
-  const openBtn = document.getElementById('openMenuBtn');
-  const closeBtn = document.getElementById('closeMenuBtn');
-  const panel = document.getElementById('datasetPanel');
-  const overlay = document.getElementById('overlay');
-
-  const openPanel = () => {
-    panel.classList.add('open');
-    overlay.classList.add('show');
-  };
-
-  const closePanel = () => {
-    panel.classList.remove('open');
-    overlay.classList.remove('show');
-  };
-
-  openBtn.addEventListener('click', openPanel);
-  closeBtn.addEventListener('click', closePanel);
-  overlay.addEventListener('click', closePanel);
-
   loadDatasetsFromStorage();
   renderDatasets();
   updateCounts();
@@ -217,7 +197,7 @@ function renderDatasets() {
     card.className = 'dataset-card';
 
     const isSaved = ds.data !== null;
-    const countText = isSaved ? `（${Object.values(ds.data).filter(v => v).length}種）` : '（未保存）';
+    const countText = isSaved ? `（${Object.values(ds.data).filter(v => v).length}種保存中）` : '（未保存）';
 
     card.innerHTML = `
       <div class="dataset-header">
@@ -228,7 +208,7 @@ function renderDatasets() {
         <span class="dataset-status">${countText}</span>
       </div>
       <div class="dataset-btn-group">
-        <button class="ds-btn ds-save" onclick="saveToDataset(${ds.id})">現在の状態を保存</button>
+        <button class="ds-btn ds-save" onclick="saveToDataset(${ds.id})">現在の選択を保存</button>
         ${isSaved ? `<button class="ds-btn ds-load" onclick="loadFromDataset(${ds.id})">読み込む</button>` : ''}
         ${isSaved ? `<button class="ds-btn ds-delete" onclick="deleteDataset(${ds.id})">✕</button>` : ''}
       </div>

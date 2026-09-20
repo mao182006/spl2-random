@@ -8,9 +8,6 @@
 </head>
 <body>
 
-  <!-- 右上のデータセットボタン -->
-  <button class="menu-toggle-btn" id="openMenuBtn">📁 データセット</button>
-
   <div class="container">
     <h1>スプラ2 ナワバリ武器くじ</h1>
     <div class="result-box" id="result">???</div>
@@ -24,21 +21,15 @@
       <button class="sub-btn" onclick="toggleAll(false)">全解除</button>
     </div>
 
+    <!-- データセット（武器種と同じアコーディオン形式） -->
+    <details class="dataset-accordion">
+      <summary>📁 データセット一覧</summary>
+      <div class="dataset-body" id="datasetContainer"></div>
+    </details>
+
     <!-- 武器リスト表示領域 -->
     <div class="weapon-container" id="weaponContainer"></div>
   </div>
-
-  <!-- 右からスライドするデータセットパネル -->
-  <div class="dataset-panel" id="datasetPanel">
-    <div class="panel-header">
-      <h2>データセット一覧</h2>
-      <button class="close-btn" id="closeMenuBtn">×</button>
-    </div>
-    <div class="panel-body" id="datasetContainer"></div>
-  </div>
-
-  <!-- パネル背景のオーバーレイ -->
-  <div class="overlay" id="overlay"></div>
 
   <!-- ポップアップ通知 -->
   <div id="toast" class="toast">メッセージ</div>
