@@ -281,30 +281,31 @@ h1 {
   background-color: #161616; /* 武器一覧エリアの背景色 */
   border-top: 1px solid #252525; /* 武器一覧区切り線の色 */
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* 列の最小幅を少し拡張 */
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 8px 10px;
 }
 
 .weapon-item {
   display: flex;
-  align-items: flex-start; /* チェックボックスと長い名前の高さを上揃え */
+  align-items: flex-start;
   gap: 6px;
   font-size: 0.78rem;
   color: #dddddd; /* 武器名の文字色 */
 
   input[type="checkbox"] {
     accent-color: #66cc00; /* 個別武器チェックのチェック色（蛍光グリーン） */
-    margin-top: 2px; /* 1行目のテキスト中央に合わせる位置調整 */
+    margin-top: 2px;
     cursor: pointer;
     width: 14px;
     height: 14px;
-    flex-shrink: 0; /* チェックボックスがつぶれないように固定 */
+    flex-shrink: 0;
   }
 
   label {
     cursor: pointer;
-    white-space: normal;  /* 折返して全表示 */
-    word-break: break-word; /* 長い単語や名称でも折り返し可能に */
+    white-space: normal;
+    word-break: keep-all;      /* 単語途中で切らず、スペース位置優先で折り返し */
+    overflow-wrap: break-word; /* 極端に長い連続文字の場合は枠内で折り返し */
     line-height: 1.35;
   }
 }
